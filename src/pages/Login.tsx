@@ -31,7 +31,7 @@ export default function Login() {
       });
 
       console.log(response.data);
-      response && alert('Login efetuado com sucesso!');
+      
       loginUser();
     } catch (error) {
       console.log(error);
