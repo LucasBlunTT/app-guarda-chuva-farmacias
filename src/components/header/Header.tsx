@@ -24,13 +24,13 @@ const styles = StyleSheet.create({
   textOne: {
     color: 'white',
     fontSize: 40,
-    borderRadius: 10,
     fontWeight: 'bold',
+    fontFamily: 'Roboto_400Regular',
   },
   textTwo: {
     marginLeft: 20,
     color: 'white',
     fontSize: 26,
-    borderRadius: 10,
+    fontFamily: 'Roboto_400Regular',
   },
 });
