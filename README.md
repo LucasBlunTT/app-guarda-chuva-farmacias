@@ -34,7 +34,7 @@ Este projeto é um aplicativo de gestão de movimentação de produtos entre fil
 ## 🛠️ Como Usar
 1. **Clone o Repositório**: 
    ```bash
-   git clone https://github.com/LucasBlunTT/projeto-movimentacao-produtos.git
-   cd projeto-movimentacao-produtos
+   git clone https://github.com/LucasBlunTT/app-guarda-chuva-farmacias.git
+   cd app-guarda-chuva-farmacias
    npm install
    npx expo start
