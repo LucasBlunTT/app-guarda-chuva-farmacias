@@ -7,8 +7,8 @@ import { AuthContext } from '../context/AuthContext';
 const Stack = createStackNavigator();
 
 export default function StackNavigator() {
-  const authContext = useContext(AuthContext); // Acessa o contexto
-  const isLoggedIn = authContext?.isLoggedIn; // Pega a propriedade isLoggedIn
+  const authContext = useContext(AuthContext);
+  const isLoggedIn = authContext?.isLoggedIn;
 
   return (
     <Stack.Navigator>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -7,15 +7,16 @@ import {
   TextInput,
   Modal,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Header from '../components/header/Header';
+import HeaderLogin from '../components/header/HeaderLogin';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Login() {
   const [email, setEmail] = useState('admin@gmail.com');
   const [password, setPassword] = useState('123456');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const navigation = useNavigation();
+  const authContext = useContext(AuthContext);
+  const loginUser = authContext?.login;
 
   async function login() {
     if (!email || !password) {
@@ -31,7 +32,7 @@ export default function Login() {
 
       console.log(response.data);
       response && alert('Login efetuado com sucesso!');
-      navigation;
+      loginUser();
     } catch (error) {
       console.log(error);
     } finally {
@@ -42,7 +43,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <HeaderLogin />
       <View style={styles.body}>
         <TextInput
           cursorColor={'#FFF'}

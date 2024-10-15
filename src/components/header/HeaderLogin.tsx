@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, Animated, Easing } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 
-export default function Header() {
+export default function HeaderLogin() {
   // Criar uma referência para o valor animado
   const rotateValue = useRef(new Animated.Value(0)).current;
 
