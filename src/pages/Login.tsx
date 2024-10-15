@@ -14,13 +14,11 @@ import axios from 'axios';
 export default function Login() {
   const [email, setEmail] = useState('admin@gmail.com');
   const [password, setPassword] = useState('123456');
-  const [isModalVisible, setIsModalVisible] = useState(false); 
-  const [modalMessage, setModalMessage] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigation = useNavigation();
 
   async function login() {
     if (!email || !password) {
-      setModalMessage('Preencha todos os campos!');
       setIsModalVisible(true);
       return;
     }
@@ -79,7 +77,7 @@ export default function Login() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>Atenção</Text>
-            <Text style={styles.modalMessage}>{modalMessage}</Text>
+            <Text style={styles.modalMessage}>Preencha todos os campos!</Text>
             <TouchableOpacity
               style={styles.closeButton}
               onPress={() => setIsModalVisible(false)}
