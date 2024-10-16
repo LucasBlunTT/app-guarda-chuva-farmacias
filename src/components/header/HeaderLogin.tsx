@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 
 export default function HeaderLogin() {
@@ -14,7 +14,7 @@ export default function HeaderLogin() {
         duration: 50000, // Tempo da rotação em milissegundos (5 segundos neste exemplo)
         easing: Easing.linear, // Efeito de rotação constante
         useNativeDriver: true, // Melhor desempenho com animações
-      })
+      }),
     ).start();
   };
 
