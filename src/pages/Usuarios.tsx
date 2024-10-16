@@ -16,7 +16,7 @@ interface RouteParams {
   id?: number; // ID opcional do produto
 }
 
-export default function Avaliation() {
+export default function Usuarios() {
   const route = useRoute();
   const params = route.params as RouteParams; // Recebendo o ID do produto
   const productId = params?.id;

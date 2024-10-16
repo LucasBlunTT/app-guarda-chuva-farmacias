@@ -1,45 +1,44 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons'; // Usando MaterialIcons do Expo
-import ListProduct from '../pages/ListPtoduct';
-import Avaliation from '../pages/Avaliation';
-import { propsNavigationTab } from './models/types';
+import Estoque from '../pages/Estoque';
+import Usuarios from '../pages/Usuarios';
 
-const Tab = createBottomTabNavigator<propsNavigationTab>();
+const Tab = createBottomTabNavigator();
 
 export default function Tabs() {
   return (
     <Tab.Navigator
       screenOptions={() => ({
         headerShown: false,
-        tabBarActiveTintColor: '#121212',
-        tabBarInactiveTintColor: '#3c3c3c',
+        tabBarActiveTintColor: '#A71412',
+        tabBarInactiveTintColor: '#999',
         tabBarStyle: {
-          backgroundColor: '#E2B616',
+          backgroundColor: '#121212',
           borderTopWidth: 0,
           minHeight: 60,
         },
         tabBarItemStyle: {
           paddingBottom: 10,
-          paddingTop: 5,
+          paddingTop: 5,      
         },
       })}
     >
       <Tab.Screen
-        name="Produtos"
-        component={ListProduct}
+        name="Estoque"
+        component={Estoque}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name={'movie-filter'} size={size} color={color} />
+            <MaterialIcons name={'inventory'} size={size} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="Avaliacao"
-        component={Avaliation}
+        name="Usuarios"
+        component={Usuarios}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name={'star'} size={size} color={color} />
+            <MaterialIcons name={'group'} size={size} color={color} />
           ),
         }}
       />
