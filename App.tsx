@@ -13,8 +13,6 @@ import {
 } from '@expo-google-fonts/roboto';
 import React from 'react';
 
-const Stack = createStackNavigator();
-
 export default function App() {
   const [fontsLoaded] = useFonts({
     Roboto_400Regular,
@@ -26,7 +24,7 @@ export default function App() {
   if (!fontsLoaded) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color='black' />
+        <ActivityIndicator size="large" color="black" />
       </View>
     );
   }

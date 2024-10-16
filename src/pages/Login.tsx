@@ -7,8 +7,10 @@ import {
   TextInput,
   Modal,
 } from 'react-native';
-import HeaderLogin from '../components/header/HeaderLogin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+
+import HeaderLogin from '../components/header/HeaderLogin';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Login() {
@@ -17,6 +19,11 @@ export default function Login() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const authContext = useContext(AuthContext);
   const loginUser = authContext?.login;
+
+  interface Data {
+    email: string;
+    password: string;
+  }
 
   async function login() {
     if (!email || !password) {
@@ -30,14 +37,23 @@ export default function Login() {
         password,
       });
 
-      console.log(response.data);
-      
+      const { data } = response;
+      console.log(data);
+      salvarLocalStorage(data);
       loginUser();
     } catch (error) {
       console.log(error);
     } finally {
       setEmail('');
       setPassword('');
+    }
+  }
+
+  async function salvarLocalStorage(data: Data) {
+    try {
+      await AsyncStorage.setItem('users', JSON.stringify(data));
+    } catch (error) {
+      console.log(error);
     }
   }
 
