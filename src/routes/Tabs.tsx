@@ -24,7 +24,7 @@ export default function Tabs() {
         },
       })}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Estoque"
         component={Estoque}
         options={{
@@ -32,7 +32,7 @@ export default function Tabs() {
             <MaterialIcons name={'inventory'} size={size} color={color} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Usuarios"
         component={Usuarios}
