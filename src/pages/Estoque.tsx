@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
+import Product from '../components/product/Product';
 
 interface Product {
   product_name: string;
@@ -63,23 +64,7 @@ export default function Estoque() {
         <FlatList
           data={products}
           keyExtractor={(item) => item.product_name}
-          renderItem={({ item }) => (
-            <View style={styles.productCard}>
-              <Image
-                source={{ uri: item.image_url }}
-                style={styles.productImage}
-              />
-              <View style={styles.productInfo}>
-                <Text style={styles.productName}>{item.product_name}</Text>
-                <Text style={styles.productBranch}>
-                  Filial: {item.branch_name}
-                </Text>
-                <Text style={styles.productQuantity}>
-                  Quantidade: {item.quantity}
-                </Text>
-              </View>
-            </View>
-          )}
+          renderItem={({ item }) => <Product item={item} />}
         />
       )}
       <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
@@ -120,37 +105,5 @@ const styles = StyleSheet.create({
     color: '#FFF',
     textAlign: 'center',
     fontSize: 18,
-  },
-  productCard: {
-    backgroundColor: '#1e1e1e',
-    borderRadius: 8,
-    marginBottom: 15,
-    padding: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  productImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 8,
-    marginRight: 15,
-  },
-  productInfo: {
-    flex: 1,
-  },
-  productName: {
-    color: '#FFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  productBranch: {
-    color: '#999',
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  productQuantity: {
-    color: '#FFF',
-    fontSize: 16,
   },
 });
