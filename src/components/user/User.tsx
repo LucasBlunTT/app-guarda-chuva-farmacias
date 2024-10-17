@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   activeUser: {
-    borderColor: '#00FF00', // Verde para usuário ativo
+    borderColor: '#00FF00', 
   },
   inactiveUser: {
-    backgroundColor: '#FF0000', // Vermelho para usuário desativado
+    backgroundColor: '#FF0000',
   },
   userName: {
     color: '#FFF',
