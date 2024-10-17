@@ -40,7 +40,7 @@ export default function Usuarios() {
         />
       </View>
       <TouchableOpacity
-        //onPress={() => navigation.navigate('')}
+        //onPress={() => navigation.navigate('Login')}
         style={styles.addButton}
       >
         <Text style={styles.addButtonText}>Adicionar Novo Usuário</Text>

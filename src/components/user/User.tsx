@@ -12,7 +12,7 @@ interface UserProps {
 }
 
 export default function User({ item }: UserProps) {
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState(item.status);
 
   async function toggleUserStatus(userId: number) {
     try {
