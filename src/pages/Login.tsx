@@ -38,7 +38,6 @@ export default function Login() {
       });
 
       const { data } = response;
-      console.log(data);
       salvarLocalStorage(data);
       loginUser();
     } catch (error) {
