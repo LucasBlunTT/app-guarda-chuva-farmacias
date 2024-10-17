@@ -7,12 +7,12 @@ interface UserProps {
     id: number;
     name: string;
     role: string;
-    status: boolean;
+    status: boolean | number;
   };
 }
 
 export default function User({ item }: UserProps) {
-  const [status, setStatus] = useState(item.status);
+  const [status, setStatus] = useState(item.status === 1 ? true : false);
 
   async function toggleUserStatus(userId: number) {
     try {
@@ -22,7 +22,7 @@ export default function User({ item }: UserProps) {
       const { status } = response.data;
       console.log(response.data);
       console.log(status);
-      setStatus(status);
+      setStatus(status === 1 ? true : false);
     } catch (error) {
       console.log(error);
       Alert.alert('Erro', 'Não foi possível atualizar o status do usuário.');
@@ -38,10 +38,7 @@ export default function User({ item }: UserProps) {
     >
       <Text style={styles.userName}>{item.name}</Text>
       <Text style={styles.userType}>{item.role}</Text>
-      <Switch
-        value={item.status}
-        onValueChange={() => toggleUserStatus(item.id)}
-      />
+      <Switch value={status} onValueChange={() => toggleUserStatus(item.id)} />
     </View>
   );
 }
