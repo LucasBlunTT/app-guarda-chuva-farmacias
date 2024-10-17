@@ -30,7 +30,6 @@ export default function Estoque() {
         params: { query },
       });
       setProducts(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     } finally {

@@ -27,10 +27,8 @@ export default function Usuarios() {
     try {
       const response = await axios.get('http://192.168.15.6:3000/users');
       setUsers(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
-      console.log(error.response.data);
     } finally {
       setLoading(false);
     }
