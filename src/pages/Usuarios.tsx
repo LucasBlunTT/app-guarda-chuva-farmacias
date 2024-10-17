@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,18 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import HeaderUser from '../components/header/HeaderUser';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import User from '../components/user/User';
 
 export default function Usuarios() {
   const [users, setUsers] = useState([]);
   const navigation = useNavigation();
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getUsers();
+    }, []),
+  );
 
   async function getUsers() {
     try {
@@ -26,6 +28,7 @@ export default function Usuarios() {
       console.log(response.data);
     } catch (error) {
       console.log(error);
+      console.log(error.response.data);
     }
   }
 
@@ -40,7 +43,7 @@ export default function Usuarios() {
         />
       </View>
       <TouchableOpacity
-        //onPress={() => navigation.navigate('Login')}
+        onPress={() => navigation.navigate('CadastroUsuario' as never)}
         style={styles.addButton}
       >
         <Text style={styles.addButtonText}>Adicionar Novo Usuário</Text>
@@ -56,7 +59,6 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    marginTop: 20,
     paddingHorizontal: 15,
   },
   userCard: {
@@ -69,10 +71,10 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   activeUser: {
-    borderColor: '#00FF00', // Verde para usuário ativo
+    borderColor: '#00FF00',
   },
   inactiveUser: {
-    backgroundColor: '#FF0000', // Vermelho para usuário desativado
+    backgroundColor: '#FF0000',
   },
   userName: {
     color: '#FFF',

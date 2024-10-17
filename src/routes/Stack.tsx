@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from '../pages/Login';
 import Tabs from './Tabs';
 import { AuthContext } from '../context/AuthContext';
+import CadastroUsuario from '../pages/CadastroUsuarios';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,18 @@ export default function StackNavigator() {
           options={{ headerShown: false }}
         />
       )}
+      <Stack.Screen
+        name="CadastroUsuario"
+        component={CadastroUsuario}
+        options={{
+          title: '',
+          headerStyle: {
+            backgroundColor: '#121212',
+          },
+          headerTintColor: '#FFF',
+          headerShadowVisible: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }

@@ -6,38 +6,48 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
+interface UserData {
+  profile: string;
+  name: string;
+  document: string;
+  full_address: string;
+  email: string;
+  password: string;
+}
+
 export default function CadastroUsuario() {
   const [name, setName] = useState('');
-  const [cpfCnpj, setCpfCnpj] = useState('');
-  const [address, setAddress] = useState('');
+  const [document, setDocument] = useState('');
+  const [fullAddress, setFullAddress] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState(''); // Armazena o perfil escolhido (Motorista ou Filial)
+  const [profile, setProfile] = useState('');
   const navigation = useNavigation();
 
-  // Função para validar campos antes de enviar
   function validarCampos() {
-    if (!name || !cpfCnpj || !address || !email || !password || !role) {
+    if (!name || !document || !fullAddress || !email || !password || !profile) {
       Alert.alert('Erro', 'Todos os campos são obrigatórios.');
       return false;
     }
 
-    // Validação básica de email e CPF/CNPJ
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(email)) {
       Alert.alert('Erro', 'Insira um email válido.');
       return false;
     }
 
-    const cpfCnpjRegex = role === 'Motorista' ? /^\d{11}$/ : /^\d{14}$/; // CPF para motorista (11 dígitos) e CNPJ para filial (14 dígitos)
-    if (!cpfCnpjRegex.test(cpfCnpj)) {
+    const documentRegex = profile === 'motorista' ? /^\d{11}$/ : /^\d{14}$/;
+    if (!documentRegex.test(document)) {
       const tipoDocumento =
-        role === 'Motorista' ? 'CPF (11 dígitos)' : 'CNPJ (14 dígitos)';
+        profile === 'motorista' ? 'CPF (11 dígitos)' : 'CNPJ (14 dígitos)';
       Alert.alert('Erro', `Insira um ${tipoDocumento} válido.`);
       return false;
     }
@@ -51,22 +61,22 @@ export default function CadastroUsuario() {
     }
 
     try {
-      const userData = {
+      const userData: UserData = {
+        profile,
         name,
-        cpfCnpj,
-        address,
+        document,
+        full_address: fullAddress,
         email,
         password,
-        role,
       };
 
       const response = await axios.post(
-        'http://192.168.15.6:3000/users',
+        'http://192.168.15.6:3000/register',
         userData,
       );
       if (response.status === 201) {
         Alert.alert('Sucesso', 'Usuário criado com sucesso!');
-        navigation.goBack(); // Volta para a tela anterior (listagem de usuários)
+        navigation.goBack();
       }
     } catch (error) {
       console.log(error);
@@ -75,74 +85,93 @@ export default function CadastroUsuario() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Cadastro de Usuário</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <Text style={styles.title}>Cadastro de Usuário</Text>
 
-      <Text style={styles.label}>Perfil</Text>
-      <Picker
-        selectedValue={role}
-        style={styles.picker}
-        onValueChange={(itemValue) => setRole(itemValue)}
-      >
-        <Picker.Item label="Selecione o perfil" value="" />
-        <Picker.Item label="Motorista" value="Motorista" />
-        <Picker.Item label="Filial" value="Filial" />
-      </Picker>
+        <Text style={styles.label}>Perfil</Text>
+        <Picker
+          selectedValue={profile}
+          style={styles.picker}
+          onValueChange={(itemValue) => setProfile(itemValue)}
+        >
+          <Picker.Item label="Selecione o perfil" value="" />
+          <Picker.Item label="Motorista" value="motorista" />
+          <Picker.Item label="Filial" value="filial" />
+        </Picker>
 
-      <TextInput
-        placeholder="Nome Completo"
-        style={styles.input}
-        value={name}
-        onChangeText={setName}
-      />
+        <TextInput
+          placeholder="Nome Completo"
+          placeholderTextColor="#999"
+          cursorColor={'#FFF'}
+          style={styles.input}
+          value={name}
+          onChangeText={setName}
+        />
 
-      <TextInput
-        placeholder={
-          role === 'Motorista'
-            ? 'CPF (somente números)'
-            : 'CNPJ (somente números)'
-        }
-        style={styles.input}
-        value={cpfCnpj}
-        onChangeText={setCpfCnpj}
-        keyboardType="numeric"
-      />
+        <TextInput
+          placeholder={
+            profile === 'motorista'
+              ? 'CPF (somente números)'
+              : 'CNPJ (somente números)'
+          }
+          placeholderTextColor="#999"
+          cursorColor={'#FFF'}
+          style={styles.input}
+          value={document}
+          onChangeText={setDocument}
+          keyboardType="numeric"
+        />
 
-      <TextInput
-        placeholder="Endereço Completo"
-        style={styles.input}
-        value={address}
-        onChangeText={setAddress}
-      />
+        <TextInput
+          placeholder="Endereço Completo"
+          placeholderTextColor="#999"
+          cursorColor={'#FFF'}
+          style={styles.input}
+          value={fullAddress}
+          onChangeText={setFullAddress}
+        />
 
-      <TextInput
-        placeholder="Email"
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
+        <TextInput
+          placeholder="Email"
+          placeholderTextColor="#999"
+          cursorColor={'#FFF'}
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+        />
 
-      <TextInput
-        placeholder="Senha"
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <TextInput
+          placeholder="Senha"
+          placeholderTextColor="#999"
+          cursorColor={'#FFF'}
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
 
-      <TouchableOpacity onPress={createUser} style={styles.button}>
-        <Text style={styles.buttonText}>Cadastrar</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity onPress={createUser} style={styles.button}>
+          <Text style={styles.buttonText}>Cadastrar</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#121212',
+  },
+  scrollView: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    padding: 20,
   },
   title: {
     fontSize: 24,

@@ -24,8 +24,7 @@ export default function HeaderUser() {
 
 const styles = StyleSheet.create({
   header: {
-    marginTop: 50,
-    padding: 10,
+    padding: 35,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -6,8 +6,11 @@ interface UserProps {
   item: {
     id: number;
     name: string;
-    role: string;
+    profile: string;
     status: boolean | number;
+    document: string;
+    email: string;
+    full_address: string;
   };
 }
 
@@ -21,7 +24,6 @@ export default function User({ item }: UserProps) {
       );
       const { status } = response.data;
       console.log(response.data);
-      console.log(status);
       setStatus(status === 1 ? true : false);
     } catch (error) {
       console.log(error);
@@ -36,8 +38,13 @@ export default function User({ item }: UserProps) {
         status ? styles.activeUser : styles.inactiveUser,
       ]}
     >
-      <Text style={styles.userName}>{item.name}</Text>
-      <Text style={styles.userType}>{item.role}</Text>
+      <View style={styles.userInfo}>
+        <Text style={styles.userName}>{item.name}</Text>
+        <Text style={styles.userProfile}>{item.profile}</Text>
+        <Text style={styles.userDocument}>CPF: {item.document}</Text>
+        <Text style={styles.userEmail}>Email: {item.email}</Text>
+        <Text style={styles.userAddress}>Endereço: {item.full_address}</Text>
+      </View>
       <Switch value={status} onValueChange={() => toggleUserStatus(item.id)} />
     </View>
   );
@@ -53,20 +60,37 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 2,
   },
+  userInfo: {
+    flex: 1,
+  },
   activeUser: {
-    borderColor: '#00FF00', 
+    borderColor: '#00FF00',
+    backgroundColor: '#003300',
   },
   inactiveUser: {
-    backgroundColor: '#FF0000',
+    borderColor: '#8B0000',
+    backgroundColor: '#330000',
   },
   userName: {
     color: '#FFF',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  userType: {
-    color: '#999',
+  userProfile: {
+    color: '#FF6347',
     fontSize: 16,
+  },
+  userDocument: {
+    color: '#B0C4DE',
+    fontSize: 14,
+  },
+  userEmail: {
+    color: '#B0C4DE',
+    fontSize: 14,
+  },
+  userAddress: {
+    color: '#B0C4DE',
+    fontSize: 14,
   },
   addButton: {
     backgroundColor: '#A71412',
