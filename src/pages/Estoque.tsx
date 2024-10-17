@@ -50,6 +50,7 @@ export default function Estoque() {
   return (
     <View style={styles.container}>
       <TextInput
+        cursorColor="#FFF"
         style={styles.searchInput}
         placeholder="Pesquisar por produto ou filial"
         placeholderTextColor="#999"
