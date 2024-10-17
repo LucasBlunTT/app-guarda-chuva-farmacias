@@ -56,10 +56,6 @@ export default function Estoque() {
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
-      <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
-        <Text style={styles.searchButtonText}>Buscar</Text>
-      </TouchableOpacity>
-
       {loading ? (
         <Text style={styles.loadingText}>Carregando...</Text>
       ) : (
@@ -85,6 +81,9 @@ export default function Estoque() {
           )}
         />
       )}
+      <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
+        <Text style={styles.searchButtonText}>Buscar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
