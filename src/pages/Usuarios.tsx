@@ -5,7 +5,6 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 import axios from 'axios';
 import HeaderUser from '../components/header/HeaderUser';
@@ -14,6 +13,7 @@ import User from '../components/user/User';
 
 export default function Usuarios() {
   const [users, setUsers] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     getUsers();
@@ -39,7 +39,10 @@ export default function Usuarios() {
           renderItem={({ item }) => <User item={item} />}
         />
       </View>
-      <TouchableOpacity style={styles.addButton}>
+      <TouchableOpacity
+        //onPress={() => navigation.navigate('')}
+        style={styles.addButton}
+      >
         <Text style={styles.addButtonText}>Adicionar Novo Usuário</Text>
       </TouchableOpacity>
     </View>
