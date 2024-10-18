@@ -27,7 +27,7 @@ export default function Estoque() {
   const getProducts = async (query: string = '') => {
     setLoading(true);
     try {
-      const response = await axios.get('http://192.168.15.6:3000/products', {
+      const response = await axios.get('http://10.106.150.88:3000/products', {
         params: { query },
       });
       setProducts(response.data);

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -7,26 +7,25 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
-import HeaderUser from '../components/header/HeaderUser';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import User from '../components/user/User';
+import Moviments from '../components/moviments/Moviments';
 
-export default function Usuarios() {
-  const [users, setUsers] = useState([]);
+export default function Movimentacoes() {
+  const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   useFocusEffect(
     useCallback(() => {
-      getUsers();
+      getMovements();
     }, []),
   );
 
-  async function getUsers() {
+  async function getMovements() {
     setLoading(true);
     try {
-      const response = await axios.get('http://10.106.150.88:3000/users');
-      setUsers(response.data);
+      const response = await axios.get('http://10.106.150.88:3000/movements');
+      setMovements(response.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -36,25 +35,23 @@ export default function Usuarios() {
 
   return (
     <View style={styles.container}>
-      <HeaderUser />
-
       <View style={styles.body}>
         {loading ? (
           <Text style={styles.loadingText}>Carregando...</Text>
         ) : (
           <FlatList
-            data={users}
+            data={movements}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <User item={item} />}
+            renderItem={({ item }) => <Moviments item={item} />}
           />
         )}
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('CadastroUsuario' as never)}
+        onPress={() => navigation.navigate('CadastroMovimentacao' as never)}
         style={styles.addButton}
       >
-        <Text style={styles.addButtonText}>Adicionar Novo Usuário</Text>
+        <Text style={styles.addButtonText}>Adicionar Nova Movimentação</Text>
       </TouchableOpacity>
     </View>
   );
@@ -63,6 +60,7 @@ export default function Usuarios() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 50,
     backgroundColor: '#121212',
   },
   body: {
