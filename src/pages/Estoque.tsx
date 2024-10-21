@@ -27,9 +27,12 @@ export default function Estoque() {
   const getProducts = async (query: string = '') => {
     setLoading(true);
     try {
-      const response = await axios.get('http://10.106.150.88:3000/products', {
-        params: { query },
-      });
+      const response = await axios.get(
+        `${process.env.EXPO_PUBLIC_API}/products`,
+        {
+          params: { query },
+        },
+      );
       setProducts(response.data);
     } catch (error) {
       console.log(error);

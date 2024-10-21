@@ -20,7 +20,7 @@ export default function User({ item }: UserProps) {
   async function toggleUserStatus(userId: number) {
     try {
       const response = await axios.patch(
-        `http://10.106.150.88:3000/users/${userId}/toggle-status`,
+        `${process.env.EXPO_PUBLIC_API}/users/${userId}/toggle-status`,
       );
       const { status } = response.data;
       console.log(response.data);

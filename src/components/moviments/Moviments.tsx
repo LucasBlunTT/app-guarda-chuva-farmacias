@@ -1,7 +1,13 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import MapView, { Marker } from 'react-native-maps';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+const { height } = Dimensions.get('window');
 
 export default function Moviments({ item }) {
+  const [showMap, setShowMap] = useState(false);
+
   return (
     <View style={styles.movementCard}>
       <View style={styles.movementInfo}>
@@ -10,52 +16,113 @@ export default function Moviments({ item }) {
           Data de Criação: {item.dataCriacao}
         </Text>
         <Text style={styles.movementText}>Origem: {item.origem.nome}</Text>
-        <Text style={styles.movementText}>
-          Localização Origem: {item.origem.latitude}, {item.origem.longitude}
-        </Text>
         <Text style={styles.movementText}>Destino: {item.destino.nome}</Text>
-        <Text style={styles.movementText}>
-          Localização Destino: {item.destino.latitude}, {item.destino.longitude}
-        </Text>
         <Text style={styles.movementText}>Quantidade: {item.quantidade}</Text>
         <Text style={styles.movementText}>Status: {item.status}</Text>
+        <Image
+          source={{ uri: item.produto.imagem }}
+          style={styles.productImage}
+        />
       </View>
-      <Image
-        source={{ uri: item.produto.imagem }}
-        style={styles.productImage}
-      />
+      <TouchableOpacity
+        style={[
+          styles.showMapButton,
+          { backgroundColor: showMap ? '#870d0f' : '#A71412' },
+        ]}
+        onPress={() => setShowMap(!showMap)}
+      >
+        <Text style={styles.showMapButtonText}>
+          {showMap ? 'Fechar Mapa' : 'Mostrar Mapa'}
+        </Text>
+      </TouchableOpacity>
+
+      {showMap && (
+        <View style={styles.mapContainer}>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: (item.origem.latitude + item.destino.latitude) / 2,
+              longitude: (item.origem.longitude + item.destino.longitude) / 2,
+              latitudeDelta:
+                Math.abs(item.origem.latitude - item.destino.latitude) + 5,
+              longitudeDelta:
+                Math.abs(item.origem.longitude - item.destino.longitude) + 5,
+            }}
+          >
+            <Marker
+              coordinate={{
+                latitude: item.origem.latitude,
+                longitude: item.origem.longitude,
+              }}
+              title="Origem"
+              description={item.origem.nome}
+            />
+
+            <Marker
+              coordinate={{
+                latitude: item.destino.latitude,
+                longitude: item.destino.longitude,
+              }}
+              title="Destino"
+              description={item.destino.nome}
+              pinColor="blue"
+            />
+          </MapView>
+        </View>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   movementCard: {
-    backgroundColor: '#2c003e', 
+    backgroundColor: '#2c003e',
     padding: 15,
     borderRadius: 8,
     marginBottom: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     borderWidth: 2,
     borderColor: '#4b0082',
   },
   movementInfo: {
-    flex: 1,
+    alignItems: 'center',
+    marginBottom: 10,
   },
   movementTitle: {
     color: '#FFF',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 8,
   },
   movementText: {
-    color: '#B0C4DE',
+    color: '#E0E0E0',
     fontSize: 14,
     marginBottom: 5,
   },
   productImage: {
-    width: 50,
-    height: 50,
-    marginLeft: 10,
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
+    marginVertical: 10,
+    overflow: 'hidden',
+  },
+  mapContainer: {
+    marginTop: 20,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  showMapButton: {
+    padding: 12,
+    alignItems: 'center',
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  showMapButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  map: {
+    width: '100%',
+    height: height * 0.3,
   },
 });

@@ -32,10 +32,13 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post('http://10.106.150.88:3000/login', {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_API}/login`,
+        {
+          email,
+          password,
+        },
+      );
 
       const { data } = response;
       salvarLocalStorage(data);

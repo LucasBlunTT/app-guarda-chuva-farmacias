@@ -25,7 +25,7 @@ export default function Usuarios() {
   async function getUsers() {
     setLoading(true);
     try {
-      const response = await axios.get('http://10.106.150.88:3000/users');
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_API}/users`);
       setUsers(response.data);
     } catch (error) {
       console.log(error);

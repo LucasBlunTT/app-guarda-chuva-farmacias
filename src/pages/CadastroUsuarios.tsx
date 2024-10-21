@@ -71,7 +71,7 @@ export default function CadastroUsuario() {
       };
 
       const response = await axios.post(
-        'http://10.106.150.88:3000/register',
+        `${process.env.EXPO_PUBLIC_API}/register`,
         userData,
       );
       if (response.status === 201) {
