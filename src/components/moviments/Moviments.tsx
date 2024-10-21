@@ -27,7 +27,7 @@ export default function Moviments({ item }) {
       <TouchableOpacity
         style={[
           styles.showMapButton,
-          { backgroundColor: showMap ? '#870d0f' : '#A71412' },
+          { backgroundColor: showMap ? '#512DA8' : '#673AB7' },
         ]}
         onPress={() => setShowMap(!showMap)}
       >
