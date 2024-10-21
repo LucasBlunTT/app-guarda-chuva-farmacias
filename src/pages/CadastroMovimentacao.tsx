@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View,
   Text,
   TextInput,
   TouchableOpacity,
@@ -22,22 +21,19 @@ export default function CadastroMovimentacao() {
   const [observacoes, setObservacoes] = useState('');
   const [filiais, setFiliais] = useState([]);
   const [produtos, setProdutos] = useState([]);
+  const [quantidadeDisponivel, setQuantidadeDisponivel] = useState(0);
   const navigation = useNavigation();
 
-  // Busca as opções para os pickers
   useEffect(() => {
     async function fetchOptions() {
       try {
-        // Atualizando a rota para /branches/options
         const responseBranches = await axios.get(
           `${process.env.EXPO_PUBLIC_API}/branches/options`,
         );
 
-        // Atualizando a rota para /products/options
         const responseProducts = await axios.get(
           `${process.env.EXPO_PUBLIC_API}/products/options`,
         );
-        console.log(responseProducts.data);
 
         setFiliais(responseBranches.data);
         setProdutos(responseProducts.data);
@@ -52,6 +48,15 @@ export default function CadastroMovimentacao() {
     fetchOptions();
   }, []);
 
+  useEffect(() => {
+    const produtoSelecionado = produtos.find((p) => p.product_id === produto);
+    if (produtoSelecionado) {
+      setQuantidadeDisponivel(produtoSelecionado.quantity);
+    } else {
+      setQuantidadeDisponivel(0);
+    }
+  }, [produto]);
+
   function validarCampos() {
     if (!origem || !destino || !produto || !quantidade) {
       Alert.alert('Erro', 'Todos os campos são obrigatórios.');
@@ -63,11 +68,10 @@ export default function CadastroMovimentacao() {
       return false;
     }
 
-    const produtoSelecionado = produtos.find((p) => p.id === produto);
-    if (parseInt(quantidade) > produtoSelecionado.quantidade_disponivel) {
+    if (parseInt(quantidade) > quantidadeDisponivel) {
       Alert.alert(
         'Erro',
-        `A quantidade desejada não pode ser maior do que a quantidade disponível (${produtoSelecionado.quantidade_disponivel}).`,
+        `A quantidade desejada não pode ser maior do que a quantidade disponível (${quantidadeDisponivel}).`,
       );
       return false;
     }
@@ -82,14 +86,13 @@ export default function CadastroMovimentacao() {
 
     try {
       const movimentacaoData = {
-        origem: origem,
-        destino: destino,
-        produto: produto,
-        quantidade: parseInt(quantidade),
+        originBranchId: origem,
+        destinationBranchId: destino,
+        productId: produto,
+        quantity: parseInt(quantidade),
         observacoes: observacoes,
       };
 
-      // Atualizando a rota para /movements
       const response = await axios.post(
         `${process.env.EXPO_PUBLIC_API}/movements`,
         movimentacaoData,
@@ -113,7 +116,6 @@ export default function CadastroMovimentacao() {
       <ScrollView contentContainerStyle={styles.scrollView}>
         <Text style={styles.title}>Cadastro de Movimentação</Text>
 
-        {/* Picker para selecionar a filial de origem */}
         <Text style={styles.label}>Filial de Origem</Text>
         <Picker
           selectedValue={origem}
@@ -130,7 +132,6 @@ export default function CadastroMovimentacao() {
           ))}
         </Picker>
 
-        {/* Picker para selecionar a filial de destino */}
         <Text style={styles.label}>Filial de Destino</Text>
         <Picker
           selectedValue={destino}
@@ -147,7 +148,6 @@ export default function CadastroMovimentacao() {
           ))}
         </Picker>
 
-        {/* Picker para selecionar o produto */}
         <Text style={styles.label}>Produto</Text>
         <Picker
           selectedValue={produto}
@@ -157,14 +157,19 @@ export default function CadastroMovimentacao() {
           <Picker.Item label="Selecione o produto" value="" />
           {produtos.map((produto) => (
             <Picker.Item
-              key={produto.id}
-              label={produto.product_id}
-              value={produto.id}
+              key={produto.product_id}
+              label={`Produto: ${produto.product_id} (Filial: ${produto.branch_id})`}
+              value={produto.product_id}
             />
           ))}
         </Picker>
 
-        {/* TextInput para informar a quantidade desejada */}
+        {produto && (
+          <Text style={styles.label}>
+            Quantidade disponível: {quantidadeDisponivel}
+          </Text>
+        )}
+
         <TextInput
           placeholder="Quantidade"
           placeholderTextColor="#999"
@@ -175,7 +180,6 @@ export default function CadastroMovimentacao() {
           keyboardType="numeric"
         />
 
-        {/* TextInput multiline para adicionar observações */}
         <TextInput
           placeholder="Observações"
           placeholderTextColor="#999"
@@ -187,7 +191,6 @@ export default function CadastroMovimentacao() {
           numberOfLines={4}
         />
 
-        {/* Botão de cadastro */}
         <TouchableOpacity onPress={createMovimentacao} style={styles.button}>
           <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>

@@ -30,6 +30,7 @@ export default function StackNavigator() {
         name="CadastroUsuario"
         component={CadastroUsuario}
         options={{
+          animationEnabled: false,
           title: '',
           headerStyle: {
             backgroundColor: '#121212',
@@ -42,6 +43,7 @@ export default function StackNavigator() {
         name="CadastroMovimentacao"
         component={CadastroMovimentacao}
         options={{
+          animationEnabled: false,
           title: '',
           headerStyle: {
             backgroundColor: '#121212',
