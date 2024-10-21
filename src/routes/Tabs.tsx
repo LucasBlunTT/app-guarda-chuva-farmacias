@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons'; // Usando MaterialIcons do Expo
 import Estoque from '../pages/Estoque';
 import Usuarios from '../pages/Usuarios';
+import Movimentacoes from '../pages/Movimentacoes';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,6 +40,15 @@ export default function Tabs() {
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name={'group'} size={size} color={color} />
+          ),
+        }}
+      />
+        <Tab.Screen
+        name="Movimentacoes"
+        component={Movimentacoes}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name={'swap-horiz'} size={size} color={color} />
           ),
         }}
       />
