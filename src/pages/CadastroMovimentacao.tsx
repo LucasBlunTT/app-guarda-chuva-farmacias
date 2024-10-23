@@ -18,7 +18,6 @@ export default function CadastroMovimentacao() {
   const [destino, setDestino] = useState('');
   const [produto, setProduto] = useState('');
   const [quantidade, setQuantidade] = useState('');
-  const [observacoes, setObservacoes] = useState('');
   const [filiais, setFiliais] = useState([]);
   const [produtos, setProdutos] = useState([]);
   const [quantidadeDisponivel, setQuantidadeDisponivel] = useState(0);
@@ -90,7 +89,6 @@ export default function CadastroMovimentacao() {
         destinationBranchId: destino,
         productId: produto,
         quantity: parseInt(quantidade),
-        observacoes: observacoes,
       };
 
       const response = await axios.post(
@@ -158,7 +156,7 @@ export default function CadastroMovimentacao() {
           {produtos.map((produto) => (
             <Picker.Item
               key={produto.product_id}
-              label={`Produto: ${produto.product_id} (Filial: ${produto.branch_id})`}
+              label={`Produto: ${produto.product_name} (Filial: ${produto.branch_id})`}
               value={produto.product_id}
             />
           ))}
@@ -178,17 +176,6 @@ export default function CadastroMovimentacao() {
           value={quantidade}
           onChangeText={setQuantidade}
           keyboardType="numeric"
-        />
-
-        <TextInput
-          placeholder="Observações"
-          placeholderTextColor="#999"
-          cursorColor={'#FFF'}
-          style={[styles.input, styles.textArea]}
-          value={observacoes}
-          onChangeText={setObservacoes}
-          multiline
-          numberOfLines={4}
         />
 
         <TouchableOpacity onPress={createMovimentacao} style={styles.button}>
@@ -235,9 +222,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#1e1e1e',
     marginBottom: 15,
     borderRadius: 8,
-  },
-  textArea: {
-    height: 100,
   },
   button: {
     backgroundColor: '#A71412',
