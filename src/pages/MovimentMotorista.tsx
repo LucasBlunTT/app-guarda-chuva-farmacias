@@ -8,16 +8,19 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import Moviments from '../components/moviments/Moviments';
+import EntregasMotorista from '../components/moviments/EntregasMotorista';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Movimentacoes() {
+export default function MovimentMotorista() {
   const [movements, setMovements] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [motoristaLogado, setMotoristaLogado] = useState(null);
   const navigation = useNavigation();
 
   useFocusEffect(
     useCallback(() => {
       getMovements();
+      getLocalStorage();
     }, []),
   );
 
@@ -35,6 +38,14 @@ export default function Movimentacoes() {
     }
   }
 
+  async function getLocalStorage() {
+    try {
+      const motoristaLogado = JSON.parse(await AsyncStorage.getItem('users'));
+      setMotoristaLogado(motoristaLogado);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <View style={styles.container}>
       <View style={styles.body}>
@@ -44,17 +55,16 @@ export default function Movimentacoes() {
           <FlatList
             data={movements}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => <Moviments item={item} />}
+            renderItem={({ item }) => (
+              <EntregasMotorista
+                item={item}
+                motoristaNome={motoristaLogado.name}
+                getMovements={getMovements}
+              />
+            )}
           />
         )}
       </View>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('CadastroMovimentacao' as never)}
-        style={styles.addButton}
-      >
-        <Text style={styles.addButtonText}>Adicionar Nova Movimentação</Text>
-      </TouchableOpacity>
     </View>
   );
 }
