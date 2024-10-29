@@ -33,7 +33,7 @@ export default function TabMovimentMotorista() {
         component={MovimentMotorista}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="swap-horiz" size={size} color={color} />
+            <MaterialIcons name="local-shipping" size={size} color={color} />
           ),
         }}
       />
