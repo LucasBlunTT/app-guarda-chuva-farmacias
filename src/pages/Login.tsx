@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,7 @@ import HeaderLogin from '../components/header/HeaderLogin';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Login() {
-  const [email, setEmail] = useState('admin@gmail.com');
+  const [email, setEmail] = useState('sklucassilva@gmail.com');
   const [password, setPassword] = useState('123456');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const authContext = useContext(AuthContext);
@@ -58,6 +58,14 @@ export default function Login() {
       console.log(error);
     }
   }
+
+  async function removeLocalStorage() {
+    await AsyncStorage.removeItem('users');
+  }
+
+  useEffect(() => {
+    removeLocalStorage();
+  }, []);
 
   return (
     <View style={styles.container}>

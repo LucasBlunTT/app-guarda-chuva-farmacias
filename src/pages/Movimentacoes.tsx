@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import Moviments from '../../assets/moviments/Moviments';
+import Moviments from '../components/moviments/Moviments';
 
 export default function Movimentacoes() {
   const [movements, setMovements] = useState([]);
