@@ -29,7 +29,7 @@ export default function TabMovimentMotorista() {
       }}
     >
       <Tab.Screen
-        name="MovimentMotorista"
+        name="Entregas e Pacotes"
         component={MovimentMotorista}
         options={{
           tabBarIcon: ({ color, size }) => (
