@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  Animated,
   Alert,
 } from 'react-native';
 import React, { useState, useRef } from 'react';
