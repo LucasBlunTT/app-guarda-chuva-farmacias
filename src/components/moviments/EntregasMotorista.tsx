@@ -6,7 +6,7 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as ImagePicker from 'expo-image-picker';
