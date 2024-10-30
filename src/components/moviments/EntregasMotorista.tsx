@@ -21,7 +21,6 @@ export default function EntregasMotorista({
   getMovements,
 }) {
   const [showMap, setShowMap] = useState(false);
-  const borderColorAnim = useRef(new Animated.Value(0)).current;
 
   const startDelivery = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -65,15 +64,23 @@ export default function EntregasMotorista({
     });
     formData.append('motorista', motoristaNome);
     const endpoint = `${process.env.EXPO_PUBLIC_API}/movements/${id}/${action}`;
-    
+
     try {
       await axios.put(endpoint, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      Alert.alert('Sucesso', `Entrega ${action === 'start' ? 'iniciada' : 'finalizada'} com sucesso!`);
+      Alert.alert(
+        'Sucesso',
+        `Entrega ${
+          action === 'start' ? 'iniciada' : 'finalizada'
+        } com sucesso!`,
+      );
       getMovements();
     } catch (error) {
-      Alert.alert('Erro', `Falha ao ${action === 'start' ? 'iniciar' : 'finalizar'} a entrega`);
+      Alert.alert(
+        'Erro',
+        `Falha ao ${action === 'start' ? 'iniciar' : 'finalizar'} a entrega`,
+      );
       console.error(error);
     }
   };
@@ -92,7 +99,7 @@ export default function EntregasMotorista({
   };
 
   return (
-    <Animated.View
+    <View
       style={[
         styles.movementCard,
         { borderColor: '#4B0082', backgroundColor: getStatusBackgroundColor() },
@@ -101,12 +108,17 @@ export default function EntregasMotorista({
       <View style={styles.movementInfo}>
         <Text style={styles.movementTitle}>Produto: {item.produto.nome}</Text>
         <Text style={styles.movementText}>ID: {item.id}</Text>
-        <Text style={styles.movementText}>Data de Criação: {item.dataCriacao}</Text>
+        <Text style={styles.movementText}>
+          Data de Criação: {item.dataCriacao}
+        </Text>
         <Text style={styles.movementText}>Origem: {item.origem.nome}</Text>
         <Text style={styles.movementText}>Destino: {item.destino.nome}</Text>
         <Text style={styles.movementText}>Quantidade: {item.quantidade}</Text>
         <Text style={styles.movementText}>Status: {item.status}</Text>
-        <Image source={{ uri: item.produto.imagem }} style={styles.productImage} />
+        <Image
+          source={{ uri: item.produto.imagem }}
+          style={styles.productImage}
+        />
       </View>
       <TouchableOpacity
         style={[
@@ -141,16 +153,27 @@ export default function EntregasMotorista({
             initialRegion={{
               latitude: (item.origem.latitude + item.destino.latitude) / 2,
               longitude: (item.origem.longitude + item.destino.longitude) / 2,
-              latitudeDelta: Math.abs(item.origem.latitude - item.destino.latitude) + 5,
-              longitudeDelta: Math.abs(item.origem.longitude - item.destino.longitude) + 5,
+              latitudeDelta:
+                Math.abs(item.origem.latitude - item.destino.latitude) + 5,
+              longitudeDelta:
+                Math.abs(item.origem.longitude - item.destino.longitude) + 5,
             }}
           >
-            <Marker coordinate={item.origem} title="Origem" description={item.origem.nome} />
-            <Marker coordinate={item.destino} title="Destino" description={item.destino.nome} pinColor="blue" />
+            <Marker
+              coordinate={item.origem}
+              title="Origem"
+              description={item.origem.nome}
+            />
+            <Marker
+              coordinate={item.destino}
+              title="Destino"
+              description={item.destino.nome}
+              pinColor="blue"
+            />
           </MapView>
         </View>
       )}
-    </Animated.View>
+    </View>
   );
 }
 
