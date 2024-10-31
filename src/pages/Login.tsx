@@ -22,7 +22,7 @@ interface LoginResponse {
 }
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>('sklucassilva@gmail.com');
+  const [email, setEmail] = useState<string>('admin@gmail.com');
   const [password, setPassword] = useState<string>('123456');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const authContext = useContext(AuthContext);

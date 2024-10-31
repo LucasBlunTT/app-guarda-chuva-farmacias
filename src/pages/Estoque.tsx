@@ -6,7 +6,6 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Image,
 } from 'react-native';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
@@ -19,15 +18,15 @@ interface Product {
   image_url: string;
 }
 
-export default function Estoque() {
+const Estoque: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const getProducts = async (query: string = '') => {
+  const getProducts = async (query: string = ''): Promise<void> => {
     setLoading(true);
     try {
-      const response = await axios.get(
+      const response = await axios.get<Product[]>(
         `${process.env.EXPO_PUBLIC_API}/products`,
         {
           params: { query },
@@ -35,7 +34,7 @@ export default function Estoque() {
       );
       setProducts(response.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -68,6 +67,7 @@ export default function Estoque() {
           data={products}
           keyExtractor={(item) => item.product_name}
           renderItem={({ item }) => <Product item={item} />}
+          ListEmptyComponent={<Text style={styles.loadingText}>Nenhum produto encontrado</Text>}
         />
       )}
       <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
@@ -75,7 +75,7 @@ export default function Estoque() {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -110,3 +110,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
+
+export default Estoque;
