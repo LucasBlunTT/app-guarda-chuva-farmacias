@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -20,11 +23,6 @@ export default function Login() {
   const authContext = useContext(AuthContext);
   const loginUser = authContext?.login;
 
-  interface Data {
-    email: string;
-    password: string;
-  }
-
   async function login() {
     if (!email || !password) {
       setIsModalVisible(true);
@@ -34,10 +32,7 @@ export default function Login() {
     try {
       const response = await axios.post(
         `${process.env.EXPO_PUBLIC_API}/login`,
-        {
-          email,
-          password,
-        },
+        { email, password },
       );
 
       const { data } = response;
@@ -51,7 +46,7 @@ export default function Login() {
     }
   }
 
-  async function salvarLocalStorage(data: Data) {
+  async function salvarLocalStorage(data) {
     try {
       await AsyncStorage.setItem('users', JSON.stringify(data));
     } catch (error) {
@@ -68,53 +63,58 @@ export default function Login() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <HeaderLogin />
-      <View style={styles.body}>
-        <TextInput
-          cursorColor={'#FFF'}
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#999"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          cursorColor={'#FFF'}
-          style={styles.input}
-          placeholder="Senha"
-          placeholderTextColor="#999"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-        <TouchableOpacity style={styles.buttonLogin} onPress={login}>
-          <Text style={styles.textLogin}>Entrar</Text>
-        </TouchableOpacity>
-      </View>
-
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={isModalVisible}
-        onRequestClose={() => setIsModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Atenção</Text>
-            <Text style={styles.modalMessage}>Preencha todos os campos!</Text>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setIsModalVisible(false)}
-            >
-              <Text style={styles.buttonText}>Fechar</Text>
-            </TouchableOpacity>
-          </View>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <HeaderLogin />
+        <View style={styles.body}>
+          <TextInput
+            cursorColor="#FFF"
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#999"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            cursorColor="#FFF"
+            style={styles.input}
+            placeholder="Senha"
+            placeholderTextColor="#999"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity style={styles.buttonLogin} onPress={login}>
+            <Text style={styles.textLogin}>Entrar</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
-    </View>
+
+        <Modal
+          animationType="fade"
+          transparent
+          visible={isModalVisible}
+          onRequestClose={() => setIsModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Atenção</Text>
+              <Text style={styles.modalMessage}>Preencha todos os campos!</Text>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setIsModalVisible(false)}
+              >
+                <Text style={styles.buttonText}>Fechar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -122,6 +122,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#121212',
     flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
   body: {
     marginTop: 50,
@@ -149,7 +152,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',
