@@ -16,46 +16,55 @@ import axios from 'axios';
 import HeaderLogin from '../components/header/HeaderLogin';
 import { AuthContext } from '../context/AuthContext';
 
-export default function Login() {
-  const [email, setEmail] = useState('sklucassilva@gmail.com');
-  const [password, setPassword] = useState('123456');
-  const [isModalVisible, setIsModalVisible] = useState(false);
+interface LoginResponse {
+  email: string | null;
+  password: string | null;
+}
+
+const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>('sklucassilva@gmail.com');
+  const [password, setPassword] = useState<string>('123456');
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const authContext = useContext(AuthContext);
   const loginUser = authContext?.login;
 
-  async function login() {
+  async function login(): Promise<void> {
     if (!email || !password) {
       setIsModalVisible(true);
       return;
     }
 
     try {
-      const response = await axios.post(
+      const response = await axios.post<LoginResponse>(
         `${process.env.EXPO_PUBLIC_API}/login`,
         { email, password },
       );
 
-      const { data } = response;
-      salvarLocalStorage(data);
-      loginUser();
+      const data = response.data;
+      await salvarLocalStorage(data);
+      loginUser && loginUser();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setEmail('');
       setPassword('');
     }
   }
 
-  async function salvarLocalStorage(data) {
+  async function salvarLocalStorage(data: LoginResponse): Promise<void> {
     try {
       await AsyncStorage.setItem('users', JSON.stringify(data));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
-  async function removeLocalStorage() {
-    await AsyncStorage.removeItem('users');
+  async function removeLocalStorage(): Promise<void> {
+    try {
+      await AsyncStorage.removeItem('users');
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {
@@ -116,7 +125,7 @@ export default function Login() {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -189,3 +198,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default Login;
