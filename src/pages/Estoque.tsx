@@ -18,7 +18,7 @@ interface Product {
   image_url: string;
 }
 
-const Estoque: React.FC = () => {
+export default function Estoque() {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -75,7 +75,7 @@ const Estoque: React.FC = () => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -110,5 +110,3 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
-
-export default Estoque;

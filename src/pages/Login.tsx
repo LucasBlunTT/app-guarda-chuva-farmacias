@@ -21,7 +21,7 @@ interface LoginResponse {
   password: string | null;
 }
 
-const Login: React.FC = () => {
+export default function Login() {
   const [email, setEmail] = useState<string>('admin@gmail.com');
   const [password, setPassword] = useState<string>('123456');
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -125,7 +125,7 @@ const Login: React.FC = () => {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -198,5 +198,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-export default Login;
