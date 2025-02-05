@@ -38,7 +38,7 @@ Este projeto é um aplicativo de gestão de movimentação de produtos entre fil
 - **MaterialCommunityIcons**: Biblioteca de ícones para uma interface moderna e interativa.
 
 ## 📈 Status do projeto
-🛠️ Em desenvolvimento
+✅ Concluído
 
 ## 🛠️ Como Usar
 1. **Clone o Repositório**: 
